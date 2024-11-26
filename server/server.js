@@ -6,8 +6,14 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// Middleware: Allow CORS for specific domain
+const corsOptions = {
+  origin: 'https://registerform-ue9n.vercel.app',  // Allow only your frontend domain
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // MongoDB connection
