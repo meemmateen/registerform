@@ -1,4 +1,3 @@
-// src/RegisterForm.jsx
 import React, { useState } from 'react';
 
 const RegisterForm = () => {
@@ -7,6 +6,8 @@ const RegisterForm = () => {
     email: '',
     password: '',
   });
+
+  const [error, setError] = useState(null); // For displaying any error messages
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,18 +19,26 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch('https://registerform-theta.vercel.app/api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
+    setError(null); // Reset the error message
 
-    if (response.ok) {
-      alert('User registered successfully!');
-    } else {
-      alert('Error registering user');
+    try {
+      const response = await fetch('https://registerform-theta.vercel.app/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        alert('User registered successfully!');
+        setUserData({ name: '', email: '', password: '' }); // Clear the form
+      } else {
+        const errorMessage = await response.text();
+        setError(`Error registering user: ${errorMessage}`);
+      }
+    } catch (err) {
+      setError(`Network error: ${err.message}`);
     }
   };
 
@@ -60,6 +69,8 @@ const RegisterForm = () => {
         required
       />
       <button type="submit">Register</button>
+
+      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message */}
     </form>
   );
 };
