@@ -10,7 +10,7 @@ const app = express();
 const corsOptions = {
   origin: 'https://registerform-ue9n.vercel.app',  // Specify the frontend URL
   methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
+  allowedHeaders: ['Content-Type',"Access-Control-Allow-Methods", "Access-Control-Request-Headers"],
   credentials: true,  // Optional: if you need cookies or authorization headers
 };
 
